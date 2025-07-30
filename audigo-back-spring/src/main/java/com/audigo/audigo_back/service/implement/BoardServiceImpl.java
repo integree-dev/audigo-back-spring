@@ -1,13 +1,16 @@
 package com.audigo.audigo_back.service.implement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.audigo.audigo_back.dto.request.board.PostBoardRequestDto;
 import com.audigo.audigo_back.dto.request.board.PostCommentRequestDto;
+import com.audigo.audigo_back.dto.response.CommonResponseDto;
 import com.audigo.audigo_back.dto.response.ResponseDto;
 import com.audigo.audigo_back.dto.response.board.GetBoardResponseDto;
 import com.audigo.audigo_back.dto.response.board.GetCommentListResponseDto;
@@ -19,6 +22,7 @@ import com.audigo.audigo_back.entity.BoardEntity;
 import com.audigo.audigo_back.entity.CommentEntity;
 import com.audigo.audigo_back.entity.FavoriteEntity;
 import com.audigo.audigo_back.entity.ImageEntity;
+import com.audigo.audigo_back.mapper.BoardMapper;
 import com.audigo.audigo_back.repository.BoardRepository;
 import com.audigo.audigo_back.repository.CommentRepository;
 import com.audigo.audigo_back.repository.FavoriteRepository;
@@ -35,11 +39,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-    private final BoardRepository boardRepository;
+    private final BoardRepository boardRepository; //jpa case
+    private final BoardMapper boardMapper;         //mybatis case
     private final UserRepository userRepository;
     private final ImageRepository imgRepository;
     private final FavoriteRepository favoriteRepository;
     private final CommentRepository commentRepository;
+
 
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
@@ -202,6 +208,25 @@ public class BoardServiceImpl implements BoardService {
             return ResponseDto.databaseError();
         }
         return PostCommentResponseDto.success();
+    }
+
+    /**
+     * 게시판 정보 전체 가져오기
+     */
+    @Override
+    public CommonResponseDto<List<Map<String, Object>>> getAllBoard() {
+        List<Map<String, Object>> boards = new ArrayList<Map<String, Object>>();
+        try {
+            boards = boardMapper.selectAllBoard();
+            if (boards == null)
+                return CommonResponseDto.failure("ND", "No Data");
+                
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return CommonResponseDto.databaseError();
+        }
+        
+        return CommonResponseDto.success(boards);
     }
 
 }

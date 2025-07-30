@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.audigo.audigo_back.dto.request.board.PostBoardRequestDto;
 import com.audigo.audigo_back.dto.request.board.PostCommentRequestDto;
+import com.audigo.audigo_back.dto.response.CommonResponseDto;
 import com.audigo.audigo_back.dto.response.board.GetBoardResponseDto;
 import com.audigo.audigo_back.dto.response.board.GetCommentListResponseDto;
 import com.audigo.audigo_back.dto.response.board.GetFavoriteListResponseDto;
@@ -15,6 +16,9 @@ import com.audigo.audigo_back.service.BoardService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -105,6 +109,16 @@ public class BoardController {
                 email);
 
         return response;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    @GetMapping("/get_all")
+    public ResponseEntity<CommonResponseDto<List<Map<String, Object>>>> getAllBoard() {
+        CommonResponseDto<List<Map<String, Object>>> response = boardService.getAllBoard();
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -15,6 +15,9 @@ import com.audigo.audigo_back.dto.response.auth.SignUpResponseDto;
 import com.audigo.audigo_back.service.AuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,10 +41,10 @@ public class AuthController {
      */
     @Operation(summary = "최초 회원가입", description = "최초 회원가입 시 사용자 정보를 등록.")
     @ApiResponses({
-        @ApiResponse(responseCode = "SU", description = "가입성공"),
-        @ApiResponse(responseCode = "DE", description = "DUPLICATE_EMAIL"),
-        @ApiResponse(responseCode = "DN", description = "DUPLICATE_NICKNAME"),
-        @ApiResponse(responseCode = "DT", description = "DUPLICATE_TEL_NUMBER")
+        @ApiResponse(responseCode = "SU", description = "가입성공", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "DE", description = "DUPLICATE_EMAIL", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "DN", description = "DUPLICATE_NICKNAME", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "DT", description = "DUPLICATE_TEL_NUMBER", content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/sign-up")
     public ResponseEntity<? super SignUpResponseDto> signUp(@RequestBody @Valid SignUpRequestDto requestBody) {
@@ -49,11 +52,19 @@ public class AuthController {
         return response;
     }
 
-    
+    /**
+     * 로그인
+     * @param requestBody
+     * @return
+     */
     @Operation(summary = "로그인", description = "로그인 시 사용자 mail 정보를 전달.")
     @ApiResponses({
         @ApiResponse(responseCode = "SU", description = "로그인 성공"),
         @ApiResponse(responseCode = "401", description = "SIGN_IN_FAIL")
+    })
+    @Parameters({
+        @Parameter(name = "email", description = "이메일", example = "email2@email.com"),
+        @Parameter(name = "password", description = "6자~12자 이내", example = "password")
     })
     @PostMapping("/sign-in")
     public ResponseEntity<? super SignInResponseDto> signIn(@RequestBody @Valid SignInRequestDto requestBody) {

@@ -1,9 +1,13 @@
 package com.audigo.audigo_back.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 
 import com.audigo.audigo_back.dto.request.board.PostBoardRequestDto;
 import com.audigo.audigo_back.dto.request.board.PostCommentRequestDto;
+import com.audigo.audigo_back.dto.response.CommonResponseDto;
 import com.audigo.audigo_back.dto.response.board.GetBoardResponseDto;
 import com.audigo.audigo_back.dto.response.board.GetCommentListResponseDto;
 import com.audigo.audigo_back.dto.response.board.GetFavoriteListResponseDto;
@@ -30,4 +34,8 @@ public interface BoardService {
     // 댓글 등록
     ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber,
             String email);
+
+    // 게시물 조회
+    CommonResponseDto<List<Map<String, Object>>> getAllBoard();
+    
 }
