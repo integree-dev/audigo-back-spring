@@ -112,12 +112,23 @@ public class BoardController {
     }
 
     /**
-     * 
+     * 전체 가져오기
      * @return
      */
     @GetMapping("/get_all")
     public ResponseEntity<CommonResponseDto<List<Map<String, Object>>>> getAllBoard() {
         CommonResponseDto<List<Map<String, Object>>> response = boardService.getAllBoard();
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 1개 가져오기
+     * @param brdNum
+     * @return
+     */
+    @GetMapping("/get_one/{brdNum}")
+    public ResponseEntity<CommonResponseDto<Map<String, Object>>> getOneBoard(@PathVariable("brdNum") Integer brdNum) {
+        CommonResponseDto<Map<String, Object>> response = boardService.getOneBoard(brdNum);
         return ResponseEntity.ok(response);
     }
 

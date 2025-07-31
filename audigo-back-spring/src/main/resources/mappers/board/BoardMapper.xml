@@ -8,4 +8,11 @@
           FROM board 
     </select>
 
+
+    <select id="selectOneBoard" resultType="hashmap">
+        SELECT * 
+          FROM board
+         WHERE board_number = #{brdNum}
+    </select>
+
 </mapper>

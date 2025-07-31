@@ -37,5 +37,8 @@ public interface BoardService {
 
     // 게시물 조회
     CommonResponseDto<List<Map<String, Object>>> getAllBoard();
-    
+
+    // 게시물 하나 조회
+    CommonResponseDto<Map<String, Object>> getOneBoard(Integer boardNumber);
+
 }

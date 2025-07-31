@@ -229,4 +229,27 @@ public class BoardServiceImpl implements BoardService {
         return CommonResponseDto.success(boards);
     }
 
+    /**
+     * 게시판 정보 하나 가져오기
+     */
+    @Override
+    public CommonResponseDto<Map<String, Object>> getOneBoard(Integer boardNum) {
+        Map<String, Object> board = new HashMap<String, Object>();
+        try {
+            board = boardMapper.selectOneBoard(boardNum);
+            if (board == null)
+                return CommonResponseDto.failure("ND", "No Data");
+                
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return CommonResponseDto.databaseError();
+        }
+        
+        // @Param("articleId") String articleId
+        //return CommonResponseDto.<Map<String, Object>>success(board); //명시적 지정1
+        //CommonResponseDto<Map<String, Object>> result = CommonResponseDto.success(board);//명시적 지정2
+        //return result; //명시적 지정2
+        return CommonResponseDto.success(board); //자동으로 타입 추론
+    }
+
 }
