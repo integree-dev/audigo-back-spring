@@ -28,6 +28,9 @@ public interface BoardService {
     // 게시물 등록
     ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email);
 
+    // 게시물 등록 mybatis version
+    ResponseEntity<? super PostBoardResponseDto> postBoard_my(PostBoardRequestDto dto, String email);
+
     // 좋아요 등록
     ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email);
 

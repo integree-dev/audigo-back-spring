@@ -49,7 +49,7 @@ public class BoardController {
             @RequestBody @Valid PostBoardRequestDto requestBody,
             @AuthenticationPrincipal String email) {
 
-        ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody, email);
+        ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard_my(requestBody, email);
 
         return response;
     }
@@ -112,7 +112,7 @@ public class BoardController {
     }
 
     /**
-     * 전체 가져오기
+     * 전체 가져오기 mybatis
      * @return
      */
     @GetMapping("/get_all")
@@ -122,7 +122,7 @@ public class BoardController {
     }
 
     /**
-     * 1개 가져오기
+     * 1개 가져오기 mybatis
      * @param brdNum
      * @return
      */

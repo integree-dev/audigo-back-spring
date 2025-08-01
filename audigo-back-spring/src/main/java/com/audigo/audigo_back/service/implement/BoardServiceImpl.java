@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.audigo.audigo_back.dto.request.board.PostBoardRequestDto;
 import com.audigo.audigo_back.dto.request.board.PostCommentRequestDto;
@@ -39,6 +42,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
+    private static final Log logger = LogFactory.getLog(BoardServiceImpl.class);
+
     private final BoardRepository boardRepository; //jpa case
     private final BoardMapper boardMapper;         //mybatis case
     private final UserRepository userRepository;
@@ -46,7 +51,9 @@ public class BoardServiceImpl implements BoardService {
     private final FavoriteRepository favoriteRepository;
     private final CommentRepository commentRepository;
 
-
+    /**
+     * 게시글 등록 JPA / VO
+     */
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
         try {
@@ -76,6 +83,52 @@ public class BoardServiceImpl implements BoardService {
             return ResponseDto.databaseError();
         }
         return PostBoardResponseDto.success();
+    }
+
+    /**
+     * 게시글 등록 mybatis / VO
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ResponseEntity<? super PostBoardResponseDto> postBoard_my(PostBoardRequestDto dto, String email) {
+        logger.info("=============== postBoard_my email: " + email);
+        boolean existedEmail = userRepository.existsByEmail(email);
+        if (!existedEmail)
+            return PostBoardResponseDto.notExistedUser();
+
+        BoardEntity boardEntity = new BoardEntity(dto, email);
+        // 1.게시물 내용 저장 후 자동 생성된 Board number 를 가져옴
+        int resultRow = boardMapper.insertBoard(boardEntity);
+        int genPK = boardEntity.getBoardNumber();
+
+        logger.info("=============== postBoard resultRow: " + resultRow);
+        logger.info("=============== postBoard genPK : " + genPK);
+
+        if (resultRow < 1 )
+            throw new RuntimeException("===== transaction 처리 중 예외 발생 : insertBoard =====");
+
+        List<String> boardImageList = dto.getBoardImageList();
+        List<ImageEntity> imageEntities = new ArrayList<>();
+
+        for (String image : boardImageList) {
+            ImageEntity imageEntity = new ImageEntity(genPK, image);
+            imageEntities.add(imageEntity);
+        }
+        // 2.게시물과 연결된 이미지들 저장
+        imgRepository.saveAll(imageEntities);
+
+        return PostBoardResponseDto.success();
+    }
+
+    //@Override
+    public ResponseEntity<? super PostBoardResponseDto> postBoard_my_safe(PostBoardRequestDto dto, String email) {
+        try {
+            return postBoard_my(dto, email);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.info(ex.getMessage());
+            return ResponseDto.databaseError();
+        }
     }
 
     @Override
@@ -251,5 +304,7 @@ public class BoardServiceImpl implements BoardService {
         //return result; //명시적 지정2
         return CommonResponseDto.success(board); //자동으로 타입 추론
     }
+
+   
 
 }

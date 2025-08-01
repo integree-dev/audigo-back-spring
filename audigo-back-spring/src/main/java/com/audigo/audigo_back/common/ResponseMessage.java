@@ -22,5 +22,6 @@ public interface ResponseMessage {
 
     // HTTP Status 500
     String DATABASE_ERROR = "DATABASE_ERROR";
+    String DATABASE_INSERT_ERROR = "DATABASE_INSERT_ERROR";
 
 }

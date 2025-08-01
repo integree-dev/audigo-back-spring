@@ -15,4 +15,19 @@
          WHERE board_number = #{brdNum}
     </select>
 
+    <!-- 게시판 등록 -->
+    <insert id="insertBoard" parameterType="com.audigo.audigo_back.entity.BoardEntity" useGeneratedKeys="true" keyProperty="boardNumber">
+        INSERT INTO board (
+            title,
+            content,
+            write_datetime,
+            writer_email
+        ) VALUES (
+            #{title},
+            #{content},
+            #{writeDatetime},
+            #{writerEmail}
+        )
+    </insert>
+
 </mapper>

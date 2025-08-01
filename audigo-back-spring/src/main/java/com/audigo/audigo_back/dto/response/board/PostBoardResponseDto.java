@@ -21,10 +21,15 @@ public class PostBoardResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    // 38강 5:45초
+    // 38강 5:45
     public static ResponseEntity<ResponseDto> notExistedUser() {
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+    }
+
+    public static ResponseEntity<ResponseDto> insertException() {
+        ResponseDto result = new ResponseDto(ResponseCode.DATABASE_INSERT_ERROR, ResponseMessage.DATABASE_INSERT_ERROR);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
     }
 
 }
