@@ -38,7 +38,7 @@ public class FileServiceImpl implements FileService {
             return null;
         }
 
-        String url = fileUrl + saveFileName;// http://localhost:5000/file/202008234234.png
+        String url = fileUrl + saveFileName;// http://localhost:8080/file/202008234234.png
 
         return url;
     }
