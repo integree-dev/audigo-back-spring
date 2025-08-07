@@ -36,10 +36,10 @@ public class BoardController {
     // spring이 실제 injection 하는 객체 BoardService boardService = new BoardServiceImpl(...);
     private final BoardService boardService;
 
-    @GetMapping("/{boardNumber}")
+    @GetMapping("/{bIdx}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
-            @PathVariable("boardNumber") Integer boardNumber) {
-        ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber);
+            @PathVariable("bIdx") Integer bIdx) {
+        ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(bIdx);
 
         return response;
     }
@@ -54,25 +54,25 @@ public class BoardController {
         return response;
     }
 
-    @PutMapping("/{boardNumber}/favorite")
+    @PutMapping("/{bIdx}/favorite")
     public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
-            @PathVariable("boardNumber") Integer boardNumber,
+            @PathVariable("bIdx") Integer bIdx,
             @AuthenticationPrincipal String email) {
 
-        ResponseEntity<? super PutFavoriteResponseDto> response = boardService.putFavorite(boardNumber, email);
+        ResponseEntity<? super PutFavoriteResponseDto> response = boardService.putFavorite(bIdx, email);
         return response;
     }
 
     /**
      * 좋아요 목록 조회
      * 
-     * @param boardNumber
+     * @param bIdx
      * @return
      */
-    @GetMapping("/{boardNumber}/favorite-list")
+    @GetMapping("/{bIdx}/favorite-list")
     public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(
-            @PathVariable("boardNumber") Integer boardNumber) {
-        ResponseEntity<? super GetFavoriteListResponseDto> response = boardService.getFavoriteList(boardNumber);
+            @PathVariable("bIdx") Integer bIdx) {
+        ResponseEntity<? super GetFavoriteListResponseDto> response = boardService.getFavoriteList(bIdx);
 
         return response;
     }
@@ -80,13 +80,13 @@ public class BoardController {
     /**
      * 댓글 목록 조회
      * 
-     * @param boardNumber
+     * @param bIdx
      * @return
      */
-    @GetMapping("/{boardNumber}/comment-list")
+    @GetMapping("/{bIdx}/comment-list")
     public ResponseEntity<? super GetCommentListResponseDto> getCommentList(
-            @PathVariable("boardNumber") Integer boardNumber) {
-        ResponseEntity<? super GetCommentListResponseDto> response = boardService.getCommentList(boardNumber);
+            @PathVariable("bIdx") Integer bIdx) {
+        ResponseEntity<? super GetCommentListResponseDto> response = boardService.getCommentList(bIdx);
 
         return response;
     }
@@ -99,11 +99,11 @@ public class BoardController {
      * @param boardNum
      * @return
      */
-    @PostMapping("/{boardNumber}/comment")
+    @PostMapping("/{bIdx}/comment")
     public ResponseEntity<? super PostCommentResponseDto> postComment(
             @RequestBody @Valid PostCommentRequestDto requestBody,
             @AuthenticationPrincipal String email,
-            @PathVariable("boardNumber") Integer boardNum) {
+            @PathVariable("bIdx") Integer boardNum) {
 
         ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(requestBody, boardNum,
                 email);

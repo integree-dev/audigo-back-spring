@@ -10,5 +10,5 @@ import com.audigo.audigo_back.entity.ImageEntity;
 @Repository
 public interface ImageRepository extends JpaRepository<ImageEntity, Integer> {
     // Custom query methods (if needed) can be defined here
-    List<ImageEntity> findByBoardNumber(Integer boardNumber);
+    List<ImageEntity> findBybIdx(Integer bIdx);
 }

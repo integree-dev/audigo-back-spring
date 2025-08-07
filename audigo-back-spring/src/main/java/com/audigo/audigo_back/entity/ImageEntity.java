@@ -20,11 +20,11 @@ public class ImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int seq;
-    private int boardNumber;
+    private int bIdx;
     private String image;
 
     public ImageEntity(int boardNum, String img) {
-        this.boardNumber = boardNum;
+        this.bIdx = boardNum;
         this.image = img;
     }
 }

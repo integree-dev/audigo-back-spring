@@ -22,6 +22,6 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
             "ON C.user_email = U.email " +
             "WHERE C.board_number = ?1 " +
             "ORDER BY writeDatetime DESC", nativeQuery = true)
-    List<GetCommentListResultSet> getCommentList(Integer boardNumber);
+    List<GetCommentListResultSet> getCommentList(Integer bIdx);
 
 }

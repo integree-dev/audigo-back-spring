@@ -1,7 +1,7 @@
 package com.audigo.audigo_back.repository.resultSet;
 
 public interface GetBoardResultSet {
-    Integer getBoardNumber();
+    Integer getBIdx();
 
     String getTitle();
 

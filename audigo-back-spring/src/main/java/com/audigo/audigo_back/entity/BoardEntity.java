@@ -24,7 +24,7 @@ public class BoardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int boardNumber;
+    private int bIdx;
     private String title;
     private String content;
     private String writeDatetime;

@@ -13,7 +13,7 @@ import com.audigo.audigo_back.repository.resultSet.GetFavoriteListResultSet;
 @Repository
 public interface FavoriteRepository extends JpaRepository<FavoriteEntity, FavoritePk> {
     // Custom query methods (if needed) can be defined here
-    FavoriteEntity findByBoardNumberAndUserEmail(Integer boardNumber, String userEmail);
+    FavoriteEntity findBybIdxAndUserEmail(Integer bIdx, String userEmail);
 
     @Query(value = "SELECT " +
             "U.email AS email " +
@@ -22,6 +22,6 @@ public interface FavoriteRepository extends JpaRepository<FavoriteEntity, Favori
             "FROM favorite AS F " +
             "INNER JOIN user AS U " +
             "ON F.user_email = U.email " +
-            "WHERE F.board_number = ?1 ", nativeQuery = true)
-    List<GetFavoriteListResultSet> getFavoriteList(Integer boardNumber);
+            "WHERE F.b_idx = ?1 ", nativeQuery = true)
+    List<GetFavoriteListResultSet> getFavoriteList(Integer bIdx);
 }

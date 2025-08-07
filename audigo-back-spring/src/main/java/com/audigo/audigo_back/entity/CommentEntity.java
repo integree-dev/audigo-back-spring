@@ -28,7 +28,7 @@ public class CommentEntity {
     private String content;
     private String writeDatetime;
     private String userEmail;
-    private int boardNumber;
+    private int bIdx;
 
     /**
      * 생성자 추가
@@ -43,7 +43,7 @@ public class CommentEntity {
         String wdt = simpleDateFormat.format(now);
 
         this.content = dto.getContent();
-        this.boardNumber = boardNum;
+        this.bIdx = boardNum;
         this.userEmail = email;
         this.writeDatetime = wdt;
     }

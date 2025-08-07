@@ -66,13 +66,13 @@ public class BoardServiceImpl implements BoardService {
             boardRepository.save(boardEntity);
 
             // 2.저장 후 auto 생성된 Board number 를 가져옴
-            int boardNumber = boardEntity.getBoardNumber();
+            int bIdx = boardEntity.getBIdx();
 
             List<String> boardImageList = dto.getBoardImageList();
             List<ImageEntity> imageEntities = new ArrayList<>();
 
             for (String image : boardImageList) {
-                ImageEntity imageEntity = new ImageEntity(boardNumber, image);
+                ImageEntity imageEntity = new ImageEntity(bIdx, image);
                 imageEntities.add(imageEntity);
             }
             // 3.게시물과 연결된 이미지들 저장
@@ -99,7 +99,7 @@ public class BoardServiceImpl implements BoardService {
         BoardEntity boardEntity = new BoardEntity(dto, email);
         // 1.게시물 내용 저장 후 자동 생성된 Board number 를 가져옴
         int resultRow = boardMapper.insertBoard(boardEntity);
-        int genPK = boardEntity.getBoardNumber();
+        int genPK = boardEntity.getBIdx();
 
         logger.info("=============== postBoard resultRow: " + resultRow);
         logger.info("=============== postBoard genPK : " + genPK);
@@ -132,18 +132,18 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
+    public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer bIdx) {
         GetBoardResultSet resultSet = null;
         List<ImageEntity> imageEntities = new ArrayList<>();
 
         try {
-            resultSet = boardRepository.getBoard(boardNumber);// BoardRepository interface sql 호출
+            resultSet = boardRepository.getBoard(bIdx);// BoardRepository interface sql 호출
             if (resultSet == null)
                 return GetBoardResponseDto.noExistBoard();
 
-            imageEntities = imgRepository.findByBoardNumber(boardNumber);
+            imageEntities = imgRepository.findBybIdx(bIdx);
 
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            BoardEntity boardEntity = boardRepository.findBybIdx(bIdx);
             boardEntity.increaseViewCount();
             boardRepository.save(boardEntity);
 
@@ -156,19 +156,19 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email) {
+    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer bIdx, String email) {
         try {
             boolean existedUser = userRepository.existsByEmail(email);
             if (!existedUser)
                 return PutFavoriteResponseDto.notExistedUser();
 
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            BoardEntity boardEntity = boardRepository.findBybIdx(bIdx);
             if (boardEntity == null)
                 return PutFavoriteResponseDto.notExistedBoard();
 
-            FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
+            FavoriteEntity favoriteEntity = favoriteRepository.findBybIdxAndUserEmail(bIdx, email);
             if (favoriteEntity == null) {
-                favoriteEntity = new FavoriteEntity(email, boardNumber);
+                favoriteEntity = new FavoriteEntity(email, bIdx);
                 favoriteRepository.save(favoriteEntity);
                 boardEntity.increaseFavoriteCount();// 좋아요 증가
             } else {
@@ -187,16 +187,16 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber) {
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer bIdx) {
         // interface 객체 List
         List<GetFavoriteListResultSet> resultSets = new ArrayList<>();
 
         try {
-            boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
+            boolean existedBoard = boardRepository.existsBybIdx(bIdx);
             if (!existedBoard)
                 return GetFavoriteListResponseDto.noExistBoard();
 
-            resultSets = favoriteRepository.getFavoriteList(boardNumber);
+            resultSets = favoriteRepository.getFavoriteList(bIdx);
             if (resultSets == null)
                 return GetFavoriteListResponseDto.noExistBoard();
 
@@ -211,17 +211,17 @@ public class BoardServiceImpl implements BoardService {
      * 댓글 목록 조회
      */
     @Override
-    public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber) {
+    public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer bIdx) {
 
         // interface 객체 List 배열
         List<GetCommentListResultSet> resultSets = new ArrayList<>();
 
         try {
-            boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
+            boolean existedBoard = boardRepository.existsBybIdx(bIdx);
             if (!existedBoard)
                 return GetCommentListResponseDto.noExistBoard();
 
-            resultSets = commentRepository.getCommentList(boardNumber);
+            resultSets = commentRepository.getCommentList(bIdx);
             if (resultSets == null)
                 return GetCommentListResponseDto.noExistBoard();
 
@@ -240,7 +240,7 @@ public class BoardServiceImpl implements BoardService {
             PostCommentRequestDto dto, Integer boardNum, String email) {
         try {
             // 1)exception 처리
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNum);
+            BoardEntity boardEntity = boardRepository.findBybIdx(boardNum);
             if (boardEntity == null)
                 return PostCommentResponseDto.notExistedBoard();
 

@@ -33,12 +33,12 @@ public class UserEntity {
 
     public UserEntity(SignUpRequestDto dto) {
         this.email = dto.getEmail();
-        this.password = dto.getPassword();
+        this.password = "pass"; //dto.getPassword();
         this.nickname = dto.getNickname();
-        this.telNumber = dto.getTelNumber();
-        this.address = dto.getAddress();
-        this.addressDetail = dto.getAddressDetail();
-        this.agreedPersonal = dto.getAgreedPersonal();
+        this.telNumber = "telNumber"; //dto.getTelNumber();
+        this.address = "address"; //dto.getAddress();
+        this.addressDetail = "addressDetail"; //dto.getAddressDetail();
+        this.agreedPersonal = true; //dto.getAgreedPersonal();
     }
 
     @Override
