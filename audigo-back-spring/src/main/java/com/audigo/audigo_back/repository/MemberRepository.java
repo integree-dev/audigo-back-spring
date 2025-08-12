@@ -19,6 +19,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, BigInteger
     MemberEntity findByEmail(String email);
 
     /**
+     * 회원가입 
      * DB 함수호출
      * @param email
      * @param nickname

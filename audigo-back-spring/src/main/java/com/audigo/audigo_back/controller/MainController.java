@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.audigo.audigo_back.dto.JoinDTO;
+import com.audigo.audigo_back.dto.test.JoinDTO;
 import com.audigo.audigo_back.service.implement.JoinService;
 
 @Controller

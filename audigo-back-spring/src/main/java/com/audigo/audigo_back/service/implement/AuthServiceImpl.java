@@ -15,7 +15,6 @@ import com.audigo.audigo_back.dto.response.ResponseDto;
 import com.audigo.audigo_back.dto.response.auth.SignInResponseDto;
 import com.audigo.audigo_back.dto.response.auth.SignUpResponseDto;
 import com.audigo.audigo_back.entity.MemberEntity;
-import com.audigo.audigo_back.entity.UserEntity;
 import com.audigo.audigo_back.jwt.JWTUtil;
 import com.audigo.audigo_back.repository.MemberRepository;
 import com.audigo.audigo_back.repository.UserRepository;

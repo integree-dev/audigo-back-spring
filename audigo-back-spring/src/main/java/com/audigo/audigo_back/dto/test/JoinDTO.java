@@ -1,4 +1,4 @@
-package com.audigo.audigo_back.dto;
+package com.audigo.audigo_back.dto.test;
 
 import lombok.Getter;
 import lombok.Setter;

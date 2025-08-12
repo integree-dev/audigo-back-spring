@@ -3,7 +3,7 @@ package com.audigo.audigo_back.service.implement;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.audigo.audigo_back.dto.JoinDTO;
+import com.audigo.audigo_back.dto.test.JoinDTO;
 import com.audigo.audigo_back.entity.UsertestEntity;
 import com.audigo.audigo_back.repository.UsertestRepository;
 
