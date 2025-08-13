@@ -47,7 +47,13 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
-
+/*
+//default
 tasks.named('test') {
 	useJUnitPlatform()
+}
+*/
+//build 시 생성되는 jar file name fix : ci/cd 용
+tasks.named("bootJar") { 
+	archiveFileName.set("audigo-back-spring.jar")
 }
