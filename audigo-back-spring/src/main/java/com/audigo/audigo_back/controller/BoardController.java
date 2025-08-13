@@ -14,6 +14,11 @@ import com.audigo.audigo_back.dto.response.board.PostCommentResponseDto;
 import com.audigo.audigo_back.dto.response.board.PutFavoriteResponseDto;
 import com.audigo.audigo_back.service.BoardService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +33,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
+@Tag(name = "Board API", description = "게시판 API")
 @RestController
 @RequestMapping("/api/v1/board")
 @RequiredArgsConstructor
@@ -36,6 +42,19 @@ public class BoardController {
     // spring이 실제 injection 하는 객체 BoardService boardService = new BoardServiceImpl(...);
     private final BoardService boardService;
 
+    
+    
+    /**
+     * 선택한 게시물 조회
+     * @param bIdx
+     * @return
+     */
+    @Operation(summary = "선택 게시물 조회", description = "게시물 목록 중 선택 시 해당 게시물 정보를 조회.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "SU", description = "조회성공", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "NB", description = "NOT_EXISTED_BOARD", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "DBE", description = "DATABASE_ERROR", content = @Content(mediaType = "application/json"))
+    })
     @GetMapping("/{bIdx}")
     public ResponseEntity<? super GetBoardResponseDto> getBoard(
             @PathVariable("bIdx") Integer bIdx) {
@@ -44,6 +63,18 @@ public class BoardController {
         return response;
     }
 
+    /**
+     * 게시물 등록
+     * @param requestBody
+     * @param email
+     * @return
+     */
+    @Operation(summary = "게시물 등록", description = "관리자 게시물 등록 기능")
+    @ApiResponses({
+        @ApiResponse(responseCode = "SU", description = "등록성공", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "NU", description = "해당 ID 를 가진 관리자가 없음", content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "DBE", description = "DATABASE_ERROR", content = @Content(mediaType = "application/json"))
+    })
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(
             @RequestBody @Valid PostBoardRequestDto requestBody,
@@ -54,6 +85,12 @@ public class BoardController {
         return response;
     }
 
+    /**
+     * 좋아요 등록
+     * @param bIdx
+     * @param email
+     * @return
+     */
     @PutMapping("/{bIdx}/favorite")
     public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
             @PathVariable("bIdx") Integer bIdx,
@@ -64,7 +101,7 @@ public class BoardController {
     }
 
     /**
-     * 좋아요 목록 조회
+     * 등록된 좋아요 조회 List
      * 
      * @param bIdx
      * @return
@@ -112,7 +149,7 @@ public class BoardController {
     }
 
     /**
-     * 전체 가져오기 mybatis
+     * 게시물 전체 가져오기 mybatis
      * @return
      */
     @GetMapping("/get_all")
@@ -122,7 +159,7 @@ public class BoardController {
     }
 
     /**
-     * 1개 가져오기 mybatis
+     * 게시물 1개 가져오기 mybatis
      * @param brdNum
      * @return
      */
